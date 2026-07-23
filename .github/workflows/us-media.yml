@@ -1,9 +1,10 @@
-name: Collect US media
+name: Daily research desk - US media
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 0,6,12,18 * * 1-5"
+    # GitHub Actions cron is UTC. 19:30 UTC is 04:30 JST on the next calendar day.
+    - cron: "30 19 * * *"
 
 permissions:
   contents: read
@@ -11,13 +12,22 @@ permissions:
 jobs:
   collect:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_DRIVE_FOLDER_ID: ${{ vars.GOOGLE_DRIVE_FOLDER_ID }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -e '.[dev]'
+      - run: pip install -e '.[dev,google]'
       - run: python -m research_desk collect --theme us-media --output-dir output/us-media
+      - name: Publish decision cards to Google Drive
+        if: ${{ env.GOOGLE_DRIVE_FOLDER_ID != '' && env.GOOGLE_SERVICE_ACCOUNT_JSON != '' }}
+        run: python -m research_desk publish-drive --theme us-media --output-dir output/us-media
+      - name: Explain missing Drive configuration
+        if: ${{ env.GOOGLE_DRIVE_FOLDER_ID == '' || env.GOOGLE_SERVICE_ACCOUNT_JSON == '' }}
+        run: echo "Drive publishing skipped. Set GOOGLE_DRIVE_FOLDER_ID and GOOGLE_SERVICE_ACCOUNT_JSON before relying on the schedule."
       - uses: actions/upload-artifact@v4
         with:
           name: us-media-${{ github.run_id }}

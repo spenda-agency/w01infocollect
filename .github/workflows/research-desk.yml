@@ -1,0 +1,27 @@
+name: Research desk manual gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: "Run only after the theme's source list has been reviewed"
+        type: choice
+        required: true
+        options:
+          - ai-efficiency
+          - digital-marketing
+          - nikkei225
+          - fx
+
+permissions:
+  contents: read
+
+jobs:
+  gated-theme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Explain gate
+        run: |
+          echo "${{ inputs.theme }} is not scheduled yet."
+          echo "Confirm its source list, source-license conditions, and human review rule before enabling collection."

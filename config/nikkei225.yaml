@@ -1,0 +1,5 @@
+# 構成銘柄は日経の公式発表または契約済みデータを確認して更新します。
+# 初回運用前に constituents を埋め、as_of と source_url を必ず更新してください。
+as_of: null
+source_url: null
+constituents: []

@@ -1,0 +1,26 @@
+themes:
+  ai-efficiency:
+    label: "生成AIによる業務効率化"
+    source_rule: "primary_only"
+    cadence: "weekday_daily"
+    outputs: ["note", "training", "diagram", "watch"]
+  digital-marketing:
+    label: "デジタルマーケティング"
+    source_rule: "official_and_industry"
+    cadence: "weekday_daily"
+    outputs: ["note", "diagram", "watch"]
+  us-media:
+    label: "アメリカメディア"
+    source_rule: "feeds_yaml"
+    cadence: "four_times_weekday"
+    outputs: ["daily_brief", "watch"]
+  nikkei225:
+    label: "日経225の決算・重要ニュース"
+    source_rule: "official_disclosure_first"
+    cadence: "weekday_twice_daily"
+    outputs: ["market_event", "watch"]
+  fx:
+    label: "通貨ペア影響ニュース"
+    source_rule: "official_macro_first"
+    cadence: "weekday_twice_daily"
+    outputs: ["market_event", "watch"]

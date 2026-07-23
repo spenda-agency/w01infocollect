@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: research-desk
+Version: 0.1.0
+Summary: Evidence-first research desk for GitHub Actions
+Requires-Python: >=3.11
+Requires-Dist: PyYAML>=6.0
+Provides-Extra: google
+Requires-Dist: google-api-python-client>=2.0; extra == "google"
+Requires-Dist: google-auth>=2.0; extra == "google"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"

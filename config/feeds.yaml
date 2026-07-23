@@ -1,0 +1,46 @@
+sources:
+  BBC:
+    feeds:
+      - { url: "https://feeds.bbci.co.uk/news/technology/rss.xml", category: "Technology" }
+      - { url: "https://feeds.bbci.co.uk/news/business/rss.xml", category: "Business" }
+      - { url: "https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml", category: "US" }
+  CNBC:
+    feeds:
+      - { url: "https://www.cnbc.com/id/19854910/device/rss/rss.html", category: "Technology" }
+      - { url: "https://www.cnbc.com/id/15839069/device/rss/rss.html", category: "Business" }
+      - { url: "https://www.cnbc.com/id/10000664/device/rss/rss.html", category: "Markets" }
+      - { url: "https://www.cnbc.com/id/10001147/device/rss/rss.html", category: "Top News" }
+  FT:
+    feeds:
+      - { url: "https://www.ft.com/technology?format=rss", category: "Technology" }
+      - { url: "https://www.ft.com/markets?format=rss", category: "Markets" }
+      - { url: "https://www.ft.com/companies?format=rss", category: "Companies" }
+      - { url: "https://www.ft.com/world/us?format=rss", category: "US" }
+  NYTimes:
+    feeds:
+      - { url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", category: "Technology" }
+      - { url: "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml", category: "Business" }
+      - { url: "https://rss.nytimes.com/services/xml/rss/nyt/Economy.xml", category: "Economy" }
+  WSJ:
+    feeds:
+      - { url: "https://feeds.content.dowjones.io/public/rss/RSSWSJD", category: "Technology" }
+      - { url: "https://feeds.content.dowjones.io/public/rss/RSSMarketsMain", category: "Markets" }
+      - { url: "https://feeds.content.dowjones.io/public/rss/WSJcomUSBusiness", category: "Business" }
+      - { url: "https://feeds.content.dowjones.io/public/rss/RSSOpinion", category: "Opinion" }
+topics:
+  AI:
+    weight: 3.0
+    keywords: ["artificial intelligence", "generative", "llm", "large language model", "chatgpt", "openai", "anthropic", "claude", "gemini", "copilot", "machine learning", "nvidia", "gpu", "data center", "inference", "foundation model", "agentic", "mistral", "perplexity", "groq", "xai", "grok", "meta ai"]
+  Tech:
+    weight: 2.0
+    keywords: ["semiconductor", "chip", "cloud", "software", "cybersecurity", "hack", "breach", "apple", "microsoft", "google", "amazon", "meta", "tesla", "tiktok", "youtube", "quantum", "robotics", "autonomous", "tsmc", "intel", "amd", "arm", "oracle", "databricks", "snowflake", "servicenow", "salesforce", "antitrust", "regulation"]
+  Marketing:
+    weight: 2.0
+    keywords: ["advertising", "ad spend", "ad revenue", "marketing", "brand", "consumer", "retail", "e-commerce", "shopify", "google ads", "meta ads", "performance marketing", "influencer", "subscription", "streaming", "netflix", "disney", "spotify", "growth", "cookie", "privacy", "first-party data", "customer acquisition", "dtc", "cmo", "tiktok shop"]
+  Finance:
+    weight: 2.5
+    keywords: ["fed", "federal reserve", "interest rate", "rate cut", "rate hike", "inflation", "cpi", "ppi", "jobs report", "unemployment", "earnings", "guidance", "quarterly", "revenue", "profit", "eps", "ipo", "m&a", "merger", "acquisition", "buyback", "dividend", "bond", "yield", "treasury", "dollar", "currency", "oil", "opec", "gold", "crypto", "sec", "tariff", "trade", "recession", "gdp", "stock", "shares", "dow", "s&p", "nasdaq"]
+exclude_keywords: ["recipe", "obituary", "royal family", "meghan", "harry and meghan", "taylor swift", "kardashian", "oscar", "grammy", "horoscope", "crossword", "wordle", "puzzle", "wirecutter deal", "best mattress", "best running shoes", "opinion | letters", "travel guide", "fashion week", " nfl ", " nba ", " mlb ", "cricket", "rugby", "tennis", "golf", "olympic", "formula 1", " f1 "]
+per_source_limit: 10
+recency_hours_hard_cutoff: 48
+recency_hours_preferred: 24

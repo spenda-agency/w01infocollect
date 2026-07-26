@@ -17,8 +17,9 @@ def _google_services():
     raw_credentials = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
     if not raw_credentials:
         raise RuntimeError("GOOGLE_SERVICE_ACCOUNT_JSON is not set.")
-    credentials = Credentials.from_service_account_info(json.loads(raw_credentials), scopes=["https://www.googleapis.com/auth/drive"])
-    return build("drive", "v3", credentials=credentials), MediaFileUpload
+    info = json.loads(raw_credentials)
+    credentials = Credentials.from_service_account_info(info, scopes=["https://www.googleapis.com/auth/drive"])
+    return build("drive", "v3", credentials=credentials), MediaFileUpload, info.get("client_email", "<unknown service account>")
 
 
 def _escape_query(value: str) -> str:
@@ -47,16 +48,29 @@ def publish_directory(source_dir: Path, root_folder_id: str, theme: str, now: da
     if not source_dir.is_dir():
         raise ValueError(f"Output directory does not exist: {source_dir}")
     now = now or datetime.now(UTC)
-    service, media_type = _google_services()
-    date_folder_id = _find_or_create_folder(service, now.date().isoformat(), root_folder_id)
-    theme_folder_id = _find_or_create_folder(service, theme, date_folder_id)
-    uploaded = 0
-    folder_ids: dict[Path, str] = {source_dir: theme_folder_id}
-    for path in sorted(source_dir.rglob("*")):
-        parent = folder_ids[path.parent]
-        if path.is_dir():
-            folder_ids[path] = _find_or_create_folder(service, path.name, parent)
-        elif path.is_file():
-            _upsert_file(service, media_type, path, parent)
-            uploaded += 1
+    service, media_type, service_account_email = _google_services()
+    from googleapiclient.errors import HttpError
+
+    try:
+        date_folder_id = _find_or_create_folder(service, now.date().isoformat(), root_folder_id)
+        theme_folder_id = _find_or_create_folder(service, theme, date_folder_id)
+        uploaded = 0
+        folder_ids: dict[Path, str] = {source_dir: theme_folder_id}
+        for path in sorted(source_dir.rglob("*")):
+            parent = folder_ids[path.parent]
+            if path.is_dir():
+                folder_ids[path] = _find_or_create_folder(service, path.name, parent)
+            elif path.is_file():
+                _upsert_file(service, media_type, path, parent)
+                uploaded += 1
+    except HttpError as error:
+        if getattr(error, "resp", None) is not None and error.resp.status == 404:
+            raise RuntimeError(
+                f"Google Drive returned 404 for folder '{root_folder_id}'. "
+                f"The service account cannot see it. Share this folder with '{service_account_email}' "
+                "(Editor for a My Drive folder, or Content manager for a Shared Drive), and confirm "
+                "GOOGLE_DRIVE_FOLDER_ID points at that folder. A Shared Drive is recommended because a "
+                "service account has no My Drive storage quota of its own."
+            ) from error
+        raise
     return {"folder_id": theme_folder_id, "uploaded_files": uploaded}

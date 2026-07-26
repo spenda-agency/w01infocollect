@@ -22,7 +22,7 @@
 
 1. `config/*.yaml` をレビューします。日経225構成銘柄は `config/nikkei225.yaml` に、確認日つきで登録してください。
 2. GitHub Actions の Variables に `GOOGLE_DRIVE_FOLDER_ID` を設定します。
-   - 保存先フォルダ: `1t5D_rUbm4kDWoE-5inPG7eZ646gWPiZZ`
+   - 保存先フォルダ: `1rBwXMkBh5AZ1YXNdMrGxS0WIGcrkgkIj`
 3. GitHub Actions の Secret `GOOGLE_SERVICE_ACCOUNT_JSON` に、Drive とレビュー用Sheetへ共有済みのサービスアカウントJSONを設定します。
 4. レビュー台帳を作成後、Variables の `REVIEW_SPREADSHEET_ID` を設定します。
 

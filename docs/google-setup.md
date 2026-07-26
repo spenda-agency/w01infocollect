@@ -2,7 +2,7 @@
 
 ## 保存先
 
-Google DriveフォルダID: `1t5D_rUbm4kDWoE-5inPG7eZ646gWPiZZ`
+Google DriveフォルダID: `1rBwXMkBh5AZ1YXNdMrGxS0WIGcrkgkIj`
 
 サービスアカウントのメールアドレスへ、このフォルダとレビュー用Google Sheetを編集共有してください。
 

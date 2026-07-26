@@ -1,8 +1,0 @@
-PyYAML>=6.0
-
-[dev]
-pytest>=8.0
-
-[google]
-google-api-python-client>=2.0
-google-auth>=2.0

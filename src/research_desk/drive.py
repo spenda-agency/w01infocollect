@@ -27,19 +27,19 @@ def _escape_query(value: str) -> str:
 
 def _find_or_create_folder(service, name: str, parent_id: str) -> str:
     query = f"name = '{_escape_query(name)}' and '{parent_id}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
-    results = service.files().list(q=query, spaces="drive", fields="files(id,name)", pageSize=1).execute()
+    results = service.files().list(q=query, spaces="drive", fields="files(id,name)", pageSize=1, supportsAllDrives=True, includeItemsFromAllDrives=True).execute()
     if results["files"]:
         return results["files"][0]["id"]
-    return service.files().create(body={"name": name, "mimeType": "application/vnd.google-apps.folder", "parents": [parent_id]}, fields="id").execute()["id"]
+    return service.files().create(body={"name": name, "mimeType": "application/vnd.google-apps.folder", "parents": [parent_id]}, fields="id", supportsAllDrives=True).execute()["id"]
 
 
 def _upsert_file(service, media_type, file_path: Path, parent_id: str) -> str:
     query = f"name = '{_escape_query(file_path.name)}' and '{parent_id}' in parents and trashed = false"
-    results = service.files().list(q=query, spaces="drive", fields="files(id)", pageSize=1).execute()
+    results = service.files().list(q=query, spaces="drive", fields="files(id)", pageSize=1, supportsAllDrives=True, includeItemsFromAllDrives=True).execute()
     media = media_type(str(file_path), resumable=True)
     if results["files"]:
-        return service.files().update(fileId=results["files"][0]["id"], media_body=media, fields="id").execute()["id"]
-    return service.files().create(body={"name": file_path.name, "parents": [parent_id]}, media_body=media, fields="id").execute()["id"]
+        return service.files().update(fileId=results["files"][0]["id"], media_body=media, fields="id", supportsAllDrives=True).execute()["id"]
+    return service.files().create(body={"name": file_path.name, "parents": [parent_id]}, media_body=media, fields="id", supportsAllDrives=True).execute()["id"]
 
 
 def publish_directory(source_dir: Path, root_folder_id: str, theme: str, now: datetime | None = None) -> dict[str, str | int]:
